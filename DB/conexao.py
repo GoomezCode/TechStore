@@ -4,7 +4,7 @@ import pymysql
 # ── CONFIGURAÇÃO DO BANCO DE DADOS ──────────────────────────────
 # Altere os valores abaixo conforme o seu ambiente.
 DB_CONFIG = {
-    "host": "192.168.100.116",   # IP do servidor MySQL
+    "host": "192.168.68.63",   # IP do servidor MySQL
     "port": 3306,                # porta padrão do MySQL
     "user": "Senac",             # usuário do banco
     "password": "Senac@123",     # senha do banco
@@ -67,6 +67,35 @@ class conexao:
         except pymysql.MySQLError as e:
             print(f"Error: {e}")
             return []
+
+    def inserir_produto(
+        self, nome, uf_origem, uf_destino, valor_base,
+        aliquota_icms, valor_icms, valor_total
+    ):
+        """Insere um novo produto na tabela produtos.
+
+        Retorna o id do registro criado ou None em caso de erro.
+        """
+        sql = """insert into produtos
+                 (nome, uf_origem, uf_destino, valor_base, aliquota_icms,
+                  valor_icms, valor_total)
+                 values (%s, %s, %s, %s, %s, %s, %s)"""
+        if not self._garantir_conexao():
+            return None
+        try:
+            with self.conexao.cursor() as cursor:
+                cursor.execute(
+                    sql,
+                    (nome, uf_origem, uf_destino, valor_base, aliquota_icms,
+                     valor_icms, valor_total),
+                )
+                novo_id = cursor.lastrowid
+            self.conexao.commit()
+            return novo_id
+        except pymysql.MySQLError as e:
+            self.conexao.rollback()
+            print(f"Error: {e}")
+            return None
 
     def aplicar_correcoes(self, correcoes):
         """Aplica várias correções de ICMS em uma única transação.

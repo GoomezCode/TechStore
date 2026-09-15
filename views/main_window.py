@@ -8,6 +8,7 @@ from services.icms import (
     formatar_moeda,
     formatar_numero,
 )
+from views.cadastro_window import cadastro_window
 from views.widgets import ToolTip
 
 COR_HEADER_BG = "#0f172a"
@@ -66,6 +67,7 @@ class main_window:
         self.window.bind("<Control-l>", lambda _e: self._focar_busca())
         self.window.bind("<Control-r>", lambda _e: self._corrigir_icms())
         self.window.bind("<Control-i>", lambda _e: self._alternar_checklist())
+        self.window.bind("<Control-n>", lambda _e: self._cadastrar_produto())
         self.window.protocol("WM_DELETE_WINDOW", self._fechar)
 
         self._carregar_dados()
@@ -105,7 +107,7 @@ class main_window:
         estilo.map("Tech.Treeview.Heading", background=[("active", "#e2e8f0")])
         estilo.configure(
             "Tech.TButton",
-            background="#16a34a",
+            background="#15803d",
             foreground="#ffffff",
             font=("Arial", 11, "bold"),
             padding=(20, 11),
@@ -113,11 +115,17 @@ class main_window:
         )
         estilo.map(
             "Tech.TButton",
-            background=[("active", "#15803d"), ("disabled", "#cbd5e1")],
+            background=[("active", "#166534"), ("disabled", "#cbd5e1")],
             foreground=[("disabled", "#f1f5f9")],
         )
         estilo.configure(
             "Tech.TEntry", fieldbackground="#f8fafc", bordercolor="#cbd5e1"
+        )
+        estilo.map(
+            "Tech.TEntry",
+            bordercolor=[("focus", "#1d4ed8")],
+            lightcolor=[("focus", "#1d4ed8")],
+            fieldbackground=[("focus", "#ffffff")],
         )
 
     def _construir_header(self):
@@ -158,7 +166,7 @@ class main_window:
             corpo = tk.Frame(cartao, bg="#ffffff")
             corpo.pack(fill="both", expand=True, padx=14, pady=(10, 12))
             tk.Label(
-                corpo, text=rotulo.upper(), bg="#ffffff", fg="#64748b",
+                corpo, text=rotulo.upper(), bg="#ffffff", fg="#475569",
                 font=("Arial", 9, "bold"),
             ).pack(anchor="w")
             valor = tk.Label(
@@ -185,11 +193,20 @@ class main_window:
         self.entry_busca.bind("<Escape>", self._limpar_busca)
         self._filtro_var.trace_add("write", lambda *_a: self._renderizar_tabela())
 
+        self.btn_cadastrar = ttk.Button(
+            barra, text="Cadastrar Produto", command=self._cadastrar_produto
+        )
+        self.btn_cadastrar.grid(row=0, column=2, sticky="e")
+        self.btn_cadastrar_tooltip = ToolTip(
+            self.btn_cadastrar,
+            lambda: "Abre o formulário de cadastro de produtos (Ctrl+N).",
+        )
+
         self.btn_corrigir = ttk.Button(
             barra, text="Corrigir ICMS", style="Tech.TButton",
             command=self._corrigir_icms,
         )
-        self.btn_corrigir.grid(row=0, column=2, sticky="e")
+        self.btn_corrigir.grid(row=0, column=3, sticky="e", padx=(12, 0))
         self.btn_corrigir.bind("<Return>", lambda _e: self._corrigir_icms())
         self.btn_tooltip = ToolTip(
             self.btn_corrigir, self._texto_tooltip_botao
@@ -199,7 +216,7 @@ class main_window:
             barra, text="Checklist", command=self._alternar_checklist
         )
         self.btn_checklist.state(["disabled"])
-        self.btn_checklist.grid(row=0, column=3, sticky="e", padx=(12, 0))
+        self.btn_checklist.grid(row=0, column=4, sticky="e", padx=(12, 0))
         self.btn_checklist_tooltip = ToolTip(
             self.btn_checklist, self._texto_tooltip_checklist
         )
@@ -255,7 +272,7 @@ class main_window:
         scroll_x.grid(row=1, column=0, sticky="ew")
 
         self.label_vazio = tk.Label(
-            self.frame_tabela, text="", bg="#ffffff", fg="#64748b",
+            self.frame_tabela, text="", bg="#ffffff", fg="#475569",
             font=("Arial", 12), justify="center",
         )
         self.label_vazio.grid(row=0, column=0, sticky="nsew")
@@ -267,7 +284,7 @@ class main_window:
         barra.grid_propagate(False)
         barra.columnconfigure(0, weight=1)
 
-        self.dot = tk.Label(barra, text="●", bg="#f8fafc", fg="#94a3b8",
+        self.dot = tk.Label(barra, text="●", bg="#f8fafc", fg="#64748b",
                             font=("Arial", 10), width=2)
         self.dot.pack(side="left", padx=(16, 0), pady=6)
         self.status_conexao = tk.Label(
@@ -276,7 +293,7 @@ class main_window:
         )
         self.status_conexao.pack(side="left", padx=(0, 8))
         self.status_detalhe = tk.Label(
-            barra, text="", bg="#f8fafc", fg="#94a3b8", font=("Arial", 9),
+            barra, text="", bg="#f8fafc", fg="#475569", font=("Arial", 9),
         )
         self.status_detalhe.pack(side="right", padx=16)
 
@@ -472,6 +489,16 @@ class main_window:
     def _limpar_busca(self, _evento=None):
         self._filtro_var.set("")
         self.btn_corrigir.focus_set()
+
+    def _cadastrar_produto(self, _evento=None):
+        janela = cadastro_window(
+            self.window, conexao=self.conexao, ao_cadastrado=self._ao_cadastrar
+        )
+        janela.focus_set()
+
+    def _ao_cadastrar(self, _novo_id):
+        self._carregar_dados()
+        self._exibir_resumo("Produto cadastrado e disponível para auditoria.")
 
     # --------------------------------------------------------- correção
 
