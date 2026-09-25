@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="270" viewBox="0 0 1200 270" role="img" aria-labelledby="title desc">
+  <title id="title">Fluxo da solução TechStore</title>
+  <desc id="desc">Fluxo em cinco etapas: conectar, auditar, revisar, corrigir no MySQL e conferir o checklist.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1d4ed8"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="270" rx="24" fill="#f8fafc"/>
+  <text x="42" y="48" fill="#0f172a" font-family="Arial, sans-serif" font-size="20" font-weight="700">FLUXO DA AUDITORIA</text>
+  <text x="42" y="75" fill="#64748b" font-family="Arial, sans-serif" font-size="14">Uma ação confirmada, um resultado verificável</text>
+  <g font-family="Arial, sans-serif" text-anchor="middle">
+    <g transform="translate(42 112)">
+      <rect width="190" height="105" rx="16" fill="#dbeafe" stroke="#93c5fd"/>
+      <circle cx="30" cy="30" r="18" fill="#1d4ed8"/>
+      <text x="30" y="35" fill="#ffffff" font-size="14" font-weight="700">01</text>
+      <text x="95" y="34" fill="#1e3a8a" font-size="16" font-weight="700">Conectar</text>
+      <text x="95" y="63" fill="#475569" font-size="13">MySQL + produtos</text>
+    </g>
+    <g transform="translate(270 112)">
+      <rect width="190" height="105" rx="16" fill="#fef3c7" stroke="#fcd34d"/>
+      <circle cx="30" cy="30" r="18" fill="#d97706"/>
+      <text x="30" y="35" fill="#ffffff" font-size="14" font-weight="700">02</text>
+      <text x="95" y="34" fill="#78350f" font-size="16" font-weight="700">Auditar</text>
+      <text x="95" y="63" fill="#475569" font-size="13">18% ou 7%?</text>
+    </g>
+    <g transform="translate(498 112)">
+      <rect width="190" height="105" rx="16" fill="#ede9fe" stroke="#c4b5fd"/>
+      <circle cx="30" cy="30" r="18" fill="#7c3aed"/>
+      <text x="30" y="35" fill="#ffffff" font-size="14" font-weight="700">03</text>
+      <text x="95" y="34" fill="#4c1d95" font-size="16" font-weight="700">Revisar</text>
+      <text x="95" y="63" fill="#475569" font-size="13">Confirmar impacto</text>
+    </g>
+    <g transform="translate(726 112)">
+      <rect width="190" height="105" rx="16" fill="#dcfce7" stroke="#86efac"/>
+      <circle cx="30" cy="30" r="18" fill="#15803d"/>
+      <text x="30" y="35" fill="#ffffff" font-size="14" font-weight="700">04</text>
+      <text x="95" y="34" fill="#14532d" font-size="16" font-weight="700">Corrigir</text>
+      <text x="95" y="63" fill="#475569" font-size="13">UPDATE transacional</text>
+    </g>
+    <g transform="translate(954 112)">
+      <rect width="204" height="105" rx="16" fill="#e0f2fe" stroke="#7dd3fc"/>
+      <circle cx="30" cy="30" r="18" fill="#0284c7"/>
+      <text x="30" y="35" fill="#ffffff" font-size="14" font-weight="700">05</text>
+      <text x="95" y="34" fill="#0c4a6e" font-size="16" font-weight="700">Conferir</text>
+      <text x="95" y="63" fill="#475569" font-size="13">Checklist final</text>
+    </g>
+  </g>
+  <g stroke="#1d4ed8" stroke-width="4" fill="none" marker-end="url(#arrow)">
+    <path d="M 232 164 H 262"/>
+    <path d="M 460 164 H 490"/>
+    <path d="M 688 164 H 718"/>
+    <path d="M 916 164 H 946"/>
+  </g>
+  <text x="600" y="248" fill="#64748b" font-family="Arial, sans-serif" font-size="13" text-anchor="middle">A ação só é persistida depois da confirmação do usuário</text>
+</svg>
